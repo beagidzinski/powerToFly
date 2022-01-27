@@ -12,16 +12,13 @@ services:
       - db
 
   db:
-    container_name: db
-    image: postgres:12
+    container_name: postgres
+    image: postgres:latest
+    env_file: database.conf
     ports:
       - "5432:5432"
-    environment:
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_USER=admin
-      - POSTGRES_DB=powerToFly
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - db_volume:/var/lib/postgresql
 
   web:
     build: .
@@ -31,4 +28,4 @@ services:
     image: "redis:alpine"
 
 volumes:
-  pgdata: {}
+  db_volume:

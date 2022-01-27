@@ -1,4 +1,6 @@
 Flask
 redis
 psycopg2-binary
+sqlalchemy-seeder
 Flask-SQLAlchemy
+Flask-Seeder
