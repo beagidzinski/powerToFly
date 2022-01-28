@@ -1,7 +1,7 @@
-Flask
+Flask==1.0.2
 redis
 psycopg2-binary
 sqlalchemy-seeder
-Flask-SQLAlchemy
+Flask-SQLAlchemy==2.3.0
 Flask-Seeder
-gunicorn
+gunicorn==19.9.0
