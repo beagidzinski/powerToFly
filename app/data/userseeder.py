@@ -1,8 +1,4 @@
 from flask_seeder import Seeder, Faker, generator
-import flask_sqlalchemy
-from flask_seeder import generator
-
-db = flask_sqlalchemy.SQLAlchemy()
 
 
 class Country(generator):
@@ -19,7 +15,7 @@ class Country(generator):
         return country
 
 
-class Users:
+class Users(Base):
     def __init__(self, id_num=None, name=None, age=None, country=None):
         self.id_num = id_num
         self.name = name
@@ -45,7 +41,6 @@ class UserSeeder(Seeder):
             }
         )
 
-        # Create 5 users
         for user in faker.create(5):
             print("Adding user: %s" % user)
             self.db.session.add(user)

@@ -13,10 +13,13 @@ services:
 
   db:
     container_name: postgres
-    image: postgres:latest
-    env_file: database.conf
+    image: postgres:12
     ports:
       - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=powerToFly
     volumes:
       - db_volume:/var/lib/postgresql
 
