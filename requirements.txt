@@ -5,3 +5,4 @@ sqlalchemy-seeder
 Flask-SQLAlchemy==2.3.0
 Flask-Seeder
 gunicorn==19.9.0
+sqlalchemy

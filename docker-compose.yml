@@ -7,18 +7,18 @@ services:
     ports:
       - "80:80"
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/power_to_fly
+      - DATABASE_URL=postgresql+psycopg2://root:postgres@database:5432/power_to_fly
     depends_on:
       - db
 
   db:
-    container_name: postgres
+    container_name: database
     image: postgres:12
     ports:
       - "5432:5432"
     environment:
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_USER=postgres
+      - POSTGRES_USER=root
       - POSTGRES_DB=power_to_fly
     volumes:
       - db_volume:/var/lib/postgresql

@@ -1,5 +1,7 @@
 import flask_sqlalchemy
+from sqlalchemy.ext.declarative import declarative_base
 
+Base = declarative_base()
 db = flask_sqlalchemy.SQLAlchemy()
 
 
@@ -8,7 +10,7 @@ def get_all(model):
     return data
 
 
-class Users(db.Model):
+class Users(Base):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
