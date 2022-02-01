@@ -40,24 +40,59 @@ db.create_all()
 db.session.commit()
 
 
-@app.route('/users', methods=['GET'])
+@app.route('/users', methods=['GET', 'POST'])
 def get_users():
     ROWS_PER_PAGE = 3
 
     page = request.args.get('page', 1, type=int)
+    filters = request.get_json()
 
-    users = Users.query.paginate(page=page, per_page=ROWS_PER_PAGE)
-    paginated_users = users.items
+    name = None
+    age = None
+    country = None
 
-    all_users = [{
-        'name': user.name,
-        'age': user.age,
-        'country': user.country
-    } for user in paginated_users]
+    if filters:
+        if 'name' in filters:
+            name = filters['name']
 
-    return jsonify({
-        'success': True,
-        'users': all_users,
-        'count': len(paginated_users)
-    })
+        if 'age' in filters:
+            age_start = filters['age']
 
+        if 'country' in filters:
+            country = filters['country']
+
+        users = Users.query.filter(
+            Users.name.ilike(name),
+            Users.country.ilike(country),
+            Users.age.like(age)
+        ).paginate(page=page, per_page=ROWS_PER_PAGE)
+
+        users = [{
+            'name': user.name,
+            'age': user.age,
+            'country': user.country
+        } for user in users]
+
+        result = jsonify({
+            'success': True,
+            'users': users,
+            'count': len(users)
+        })
+
+    else:
+        users = Users.query.paginate(page=page, per_page=ROWS_PER_PAGE)
+        paginated_users = users.items
+
+        all_users = [{
+            'name': user.name,
+            'age': user.age,
+            'country': user.country
+        } for user in paginated_users]
+
+        result = jsonify({
+            'success': True,
+            'users': all_users,
+            'count': len(paginated_users)
+        })
+
+    return result

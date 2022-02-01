@@ -1,5 +1,5 @@
 run-dev:
-	gunicorn app.app:app
+	gunicorn app:app
 
 run:
-	gunicorn --config config.py app.app:app
+	gunicorn --config config.py app:app
