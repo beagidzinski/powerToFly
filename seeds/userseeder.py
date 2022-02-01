@@ -29,6 +29,7 @@ class UserSeeder(Seeder):
         faker = Faker(
             cls=Users,
             init={
+                "id": generator.Sequence(),
                 "name": generator.Name(),
                 "age": generator.Integer(start=20, end=100),
                 "country": Country()
