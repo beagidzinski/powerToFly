@@ -22,6 +22,9 @@ class Users(db.Model):
         self.age = age
         self.country = country
 
+    def __str__(self):
+        return f"ID={self.id}, Name={self.name}, Age={self.age}, Country={self.country}"
+
     def format(self):
         return {
             'name': self.name,
@@ -57,24 +60,3 @@ def get_users():
         'count': len(paginated_users)
     })
 
-
-@app.route('/users', methods=['GET'])
-def get_users():
-    ROWS_PER_PAGE = 3
-
-    page = request.args.get('page', 1, type=int)
-
-    users = Users.query.paginate(page=page, per_page=ROWS_PER_PAGE)
-    paginated_users = users.items
-
-    all_users = [{
-        'name': user.name,
-        'age': user.age,
-        'country': user.country
-    } for user in paginated_users]
-
-    return jsonify({
-        'success': True,
-        'users': all_users,
-        'count': len(paginated_users)
-    })
