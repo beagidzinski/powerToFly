@@ -1,5 +1,5 @@
 from flask_seeder import Seeder, Faker, generator
-from app.data.models import Base
+from app.services.models import Base
 
 
 class Country(generator):

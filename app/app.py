@@ -1,14 +1,13 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, jsonify, request
+import flask_sqlalchemy
 from flask_seeder import FlaskSeeder
-import json
 
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://root:postgres@database:5432/power_to_fly'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db = SQLAlchemy(app)
+db = flask_sqlalchemy.SQLAlchemy(app)
 
 
 class Users(db.Model):
@@ -18,15 +17,64 @@ class Users(db.Model):
     age = db.Column(db.Integer)
     country = db.Column(db.String(50))
 
+    def __init__(self, name, age, country):
+        self.name = name
+        self.age = age
+        self.country = country
 
-db.create_all()
-db.session.commit()
+    def format(self):
+        return {
+            'name': self.name,
+            'age': self.age,
+            'country': self.country
+        }
+
 
 seeder = FlaskSeeder()
 seeder.init_app(app, db)
+db.create_all()
+db.session.commit()
 
 
-@app.route('/', methods=['GET'])
-def fetch():
-    all_users = "Hello World"
-    return json.dumps(all_users), 200
+@app.route('/users', methods=['GET'])
+def get_users():
+    ROWS_PER_PAGE = 3
+
+    page = request.args.get('page', 1, type=int)
+
+    users = Users.query.paginate(page=page, per_page=ROWS_PER_PAGE)
+    paginated_users = users.items
+
+    all_users = [{
+        'name': user.name,
+        'age': user.age,
+        'country': user.country
+    } for user in paginated_users]
+
+    return jsonify({
+        'success': True,
+        'users': all_users,
+        'count': len(paginated_users)
+    })
+
+
+@app.route('/users', methods=['GET'])
+def get_users():
+    ROWS_PER_PAGE = 3
+
+    page = request.args.get('page', 1, type=int)
+
+    users = Users.query.paginate(page=page, per_page=ROWS_PER_PAGE)
+    paginated_users = users.items
+
+    all_users = [{
+        'name': user.name,
+        'age': user.age,
+        'country': user.country
+    } for user in paginated_users]
+
+    return jsonify({
+        'success': True,
+        'users': all_users,
+        'count': len(paginated_users)
+    })
