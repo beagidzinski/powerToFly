@@ -29,13 +29,13 @@ class UserSeeder(Seeder):
         faker = Faker(
             cls=Users,
             init={
-                "id": generator.Sequence(),
+                "id": generator.Integer(start=10),
                 "name": generator.Name(),
                 "age": generator.Integer(start=20, end=100),
                 "country": Country()
             }
         )
 
-        for user in faker.create(5):
+        for user in faker.create(1000000):
             print("Adding user: %s" % user)
             self.db.session.add(user)
