@@ -45,6 +45,11 @@ db.create_all()
 db.session.commit()
 
 
+@app.route('/', methods=['GET'])
+def home():
+    return f'Hello! Welcome to my power to fly code challenge. The endpoints available are /users and /users/filter'
+
+
 @app.route('/users', methods=['GET'], defaults={"page": 1})
 @app.route('/<int:page>', methods=['GET'])
 @cache.cached(timeout=30, query_string=True)

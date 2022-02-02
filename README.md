@@ -28,3 +28,5 @@ the request to show different pages results, the default value of the parameter 
 ```
 
 The parameters above are all obligatory.
+For the fields `name` and `country` that are Strings, the query used is SQL `LIKE` statement while the integer field
+`age` matches using `==` statement.
