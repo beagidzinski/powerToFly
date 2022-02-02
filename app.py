@@ -45,12 +45,13 @@ db.create_all()
 db.session.commit()
 
 
-@app.route('/users', methods=['GET'])
+@app.route('/users', methods=['GET'], defaults={"page": 1})
+@app.route('/<int:page>', methods=['GET'])
 @cache.cached(timeout=30, query_string=True)
-def get_users():
-    ROWS_PER_PAGE = 3
+def get_users(page):
+    ROWS_PER_PAGE = 100
 
-    page = request.args.get('page', 1, type=int)
+    page = page
 
     users = Users.query.paginate(page=page, per_page=ROWS_PER_PAGE)
     paginated_users = users.items
@@ -71,7 +72,7 @@ def get_users():
 @app.route('/users/filter', methods=['POST'])
 @cache.cached(timeout=30, query_string=True)
 def get_users_filtered():
-    ROWS_PER_PAGE = 3
+    ROWS_PER_PAGE = 100
 
     page = request.args.get('page', 1, type=int)
     filters = request.get_json()

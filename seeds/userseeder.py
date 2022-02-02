@@ -24,12 +24,11 @@ class UserSeeder(Seeder):
         self.priority = 10
 
     def run(self):
-        countries = Country()
 
         faker = Faker(
             cls=Users,
             init={
-                "id": generator.Integer(start=10),
+                "id": generator.Sequence(),
                 "name": generator.Name(),
                 "age": generator.Integer(start=20, end=100),
                 "country": Country()
